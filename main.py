@@ -29,7 +29,7 @@ def main():
     plt.plot(minutes, sorted_power[::-1], label='PowerOriginal')
     plt.title('Power-Curve')
     plt.xlabel('Minuten')
-    plt.ylabel('Leistung (PowerOriginal)')
+    plt.ylabel('Leistung (Watt)')
     plt.legend()
 
     # Überprüfe, ob der Ordner 'figures' existiert, und erstelle ihn ggf.
