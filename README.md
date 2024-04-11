@@ -2,7 +2,7 @@
 Projektmitglieder:
 Matthias Hansen und Christian Kleber
 
-In der ersten Aufgabe soll eine Leistungskurve aus den gegebenen Daten erstellt werden.
+In der ersten Aufgabe soll eine Leistungskurve aus gegebenen Daten erstellt werden.
 
 # Requirements:
 Wir brauchen folgende Pakete:
