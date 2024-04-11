@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import os
+import os #erstellt Ordner, Directorys etc.
 from sort import bubble_sort
 from load_data import load_data
 def main():
@@ -18,7 +18,6 @@ def main():
     #sorted_power_1 = data['PowerOriginal'].dropna().sort_values() # weitere möglichkeit die Werte zu sortieren
     power = data['PowerOriginal']
     sorted_power = bubble_sort(power)
-    print(power)
     print(sorted_power[::-1]) #mit [::-1] wird die Liste umgedreht
     
     plt.figure()
