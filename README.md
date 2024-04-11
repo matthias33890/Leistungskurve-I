@@ -10,6 +10,9 @@ Wir brauchen folgende Pakete:
  - matplotlib
  - numpy
 
+Wir installieren alle Requirements gemeinsam über das Requirement File. Dies ist eine Textdatei (requirements.txt), in der nur die Requirements als einzelne Wörter drin stehen.
+
+Über den Befehl ```pip install -r requirements.txt``` werden alle Requirements auf einmal installiert.
 # Befehle:
 
 Virtuelle Umgebung erstellen:
