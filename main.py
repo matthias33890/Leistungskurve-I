@@ -1,35 +1,28 @@
 import streamlit as st
-from PIL import Image
-import read_data # Ergänzen Ihr eigenes Modul
+from read_pandas import read_my_csv
+from read_pandas import make_plot
+from read_pandas import mean_power
+from read_pandas import max_power
+from read_pandas import calculate_resting_heart_rate
+from read_pandas import create_zones_table
+from read_pandas import calculate_time_in_zones
 
-def callback_function():
-    # Logging Message
-    print(f"The user has changed to {st.session_state.current_user}")
-    # Manuelles wieder ausführen
-    #st.rerun()
+tab1, tab2 = st.tabs(["Graph", "Data"])
+df = read_my_csv()
 
-if 'current_user' not in st.session_state:
-    st.session_state.current_user = 'None'
+with tab1:
+    st.header("Graph")
+    max_heart_rate = st.number_input('Maximale Herzfrequenz', min_value=100, max_value=220, value=190) 
+    time_in_zones, average_power_in_zones = calculate_time_in_zones(df, max_heart_rate)
+    zones_table = create_zones_table(time_in_zones, average_power_in_zones)
+    fig = make_plot(df, max_heart_rate,time_in_zones, average_power_in_zones)
+    st.plotly_chart(fig)
 
-if 'picture_path' not in st.session_state:
-    st.session_state.picture_path = 'data/pictures/none.jpg'
-
-person_dict = read_data.load_person_data()
-person_names = read_data.get_person_list()
-st.write("# EKG APP")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    st.write("## Versuchsperson auswählen")
-    # Nutzen Sie ihre neue Liste anstelle der hard-gecodeten Lösung
-    st.session_state.current_user = st.selectbox(
-    'Versuchsperson',
-        options = person_names, key="sbVersuchsperson", on_change = callback_function)
-
-with col2:
-    st.write("## Bild der Versuchsperson")
-    if st.session_state.current_user in person_names:
-        st.session_state.picture_path = read_data.find_person_data_by_name(st.session_state.current_user)["picture_path"]
-    image = Image.open("./" + st.session_state.picture_path)
-    st.image(image, caption=st.session_state.current_user)
+with tab2:
+    st.header("Data")
+    st.write("Mean Power: ", df['PowerOriginal'].mean())
+    st.write("Max Power: ", df['PowerOriginal'].max())
+    st.write("Resting Heart Rate: ", calculate_resting_heart_rate(df))
+    st.write("Max Heart Rate: ", df['HeartRate'].max())
+    st.write("Time and Average Power in Zones")
+    st.dataframe(zones_table)

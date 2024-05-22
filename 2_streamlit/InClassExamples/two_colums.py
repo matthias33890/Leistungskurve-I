@@ -1,5 +1,5 @@
 import streamlit as st
-import read_data
+import read_pandas
 from PIL import Image
 
 
@@ -11,7 +11,7 @@ left_column, right_column = st.columns(2)
 
 with left_column:
 
-    person_names = read_data.get_person_list(read_data.load_person_data())
+    person_names = read_pandas.get_person_list(read_pandas.load_person_data())
 
     st.write("## Versuchsperson auswählen")
 
@@ -32,7 +32,7 @@ with left_column:
     st.write("Der Name ist: ", st.session_state.current_user) 
 
     if st.session_state.current_user in person_names:
-        st.session_state.picture_path = read_data.find_person_data_by_name(st.session_state.current_user)["picture_path"]
+        st.session_state.picture_path = read_pandas.find_person_data_by_name(st.session_state.current_user)["picture_path"]
 
 
     st.write("Der Pfad ist: ", st.session_state.picture_path) 
