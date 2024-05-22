@@ -28,7 +28,8 @@ def calculate_time_in_zones(df, max_heart_rate):
     time_in_zones = []
     average_power_in_zones = []
 
-    for zone in zones:
+    for zone in zones: 
+        #erstellt pro Zone ein Dataframe
         zone_data = df[(df['HeartRate'] >= zone['min']) & (df['HeartRate'] < zone['max'])]
         time_spent = len(zone_data)
         average_power = zone_data['PowerOriginal'].mean() if not zone_data.empty else 0
@@ -50,13 +51,13 @@ def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
     
     fig = go.Figure()
 
-    # Add PowerOriginal line to the left y-axis
+    # linke y-Achse für PowerOriginal
     fig.add_trace(go.Scatter(x=df["Duration"], y=df["PowerOriginal"], name="PowerOriginal", yaxis="y1"))
 
-    # Add HeartRate line to the right y-axis
+    # recchte y-Achse für HeartRate
     fig.add_trace(go.Scatter(x=df["Duration"], y=df["HeartRate"], name="HeartRate", yaxis="y2"))
 
-    # Set up layout with two y-axes
+    # Layout mit zwei y-Achsen wird erstellt
     fig.update_layout(
         title="Heart Rate and PowerOriginal by Zone",
         xaxis_title="Duration",
@@ -76,7 +77,7 @@ def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
         legend=dict(x=1.1, y=1.1)
     )
 
-    # Add background shapes for zones
+    # Hintergründe für die Zonen werden hinzugefügt
     for i, zone in enumerate(zones):
         fig.add_shape(
             type="rect",
@@ -86,10 +87,10 @@ def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
             opacity=0.2,
             line_width=0,
             layer="below",
-            yref="y2"  # Reference to the right y-axis (HeartRate)
+            yref="y2"  # bezieht sich auf rechte y-Achse (HeartRate)
         )
         
-        # Adding zone labels
+        # Zonenbeschriftungen werden hinzugefügt
         fig.add_annotation(
             x=df["Duration"].max(),
             y=(zone["min"] + zone["max"]) / 2,
@@ -97,7 +98,7 @@ def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
             showarrow=False,
             yshift=10,
             bgcolor="rgba(255,255,255,0.5)",
-            yref="y2"  # Reference to the right y-axis (HeartRate)
+            yref="y2"  # bezieht sich auf rechte y-Achse (HeartRate)
         )
 
     return fig
