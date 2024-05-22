@@ -1,7 +1,7 @@
 # Interaktiver Plot
 Projektmitglieder: Christian Kleber, Matthias Hansen
 
-Es soll ein interaktiver Plot erstellt werden, der in fünf Zonen aufgeteilt ist und die Herzfrequenz und die Leistung darstellt. Außerdem soll interakti die maximale Herzfrequenz über die App eingegeben werden können.
+Es soll ein interaktiver Plot erstellt werden, der die Herzfrequenz und die Leistung in abhängigkeit der Dauer, anhand von fünf Zonen, die abhängig von der maximalen Herzfrequenz sind, darstellt. Außerdem soll die maximale Herzfrequenz durch den Benutzer eingegeben und verändert werden können.
 
 # Requirements
 folgende Pakete werden benötigt:
