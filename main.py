@@ -1,45 +1,35 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import os
-from sort import bubble_sort
-from load_data import load_data
-def main():
-    # Lade die CSV-Datei
-    #data = pd.read_csv('Sort_activity.csv') # weitere Möglichkeit die Daten zu laden
+import streamlit as st
+from PIL import Image
+import read_data # Ergänzen Ihr eigenes Modul
 
-    data = load_data('Sort_activity.csv')
-    print(data)
-    # Überprüfe, ob die Spalte 'PowerOriginal' vorhanden ist
-    if 'PowerOriginal' not in data.keys():
-        print("Die Spalte 'PowerOriginal' fehlt in den Daten.")
-        return
+def callback_function():
+    # Logging Message
+    print(f"The user has changed to {st.session_state.current_user}")
+    # Manuelles wieder ausführen
+    #st.rerun()
 
-    # Entferne NaN-Werte und sortiere die Werte
-    #sorted_power_1 = data['PowerOriginal'].dropna().sort_values() # weitere möglichkeit die Werte zu sortieren
-    power = data['PowerOriginal']
-    sorted_power = bubble_sort(power)
-    print(power)
-    print(sorted_power[::-1]) #mit [::-1] wird die Liste umgedreht
-    
-    plt.figure()
-    # Umwandlung der Indexwerte von Sekunden in Minuten
-    minutes = range(len(sorted_power))  # Erzeugt eine Sequenz von Indizes
-    minutes = [m / 60 for m in minutes]  # Konvertiert Indizes in Minuten
+if 'current_user' not in st.session_state:
+    st.session_state.current_user = 'None'
 
-    plt.plot(minutes, sorted_power[::-1], label='PowerOriginal')
-    plt.title('Power-Curve')
-    plt.xlabel('Minuten')
-    plt.ylabel('Leistung (PowerOriginal)')
-    plt.legend()
+if 'picture_path' not in st.session_state:
+    st.session_state.picture_path = 'data/pictures/none.jpg'
 
-    # Überprüfe, ob der Ordner 'figures' existiert, und erstelle ihn ggf.
-    if not os.path.exists('figures'):
-        os.makedirs('figures')
+person_dict = read_data.load_person_data()
+person_names = read_data.get_person_list()
+st.write("# EKG APP")
 
-    # Speichere die Grafik
-    plt.savefig('figures/power_curve.png')
+col1, col2 = st.columns(2)
 
-    print("Die Grafik wurde in 'figures/power_curve.png' gespeichert.")
+with col1:
+    st.write("## Versuchsperson auswählen")
+    # Nutzen Sie ihre neue Liste anstelle der hard-gecodeten Lösung
+    st.session_state.current_user = st.selectbox(
+    'Versuchsperson',
+        options = person_names, key="sbVersuchsperson", on_change = callback_function)
 
-if __name__ == '__main__':
-    main()
+with col2:
+    st.write("## Bild der Versuchsperson")
+    if st.session_state.current_user in person_names:
+        st.session_state.picture_path = read_data.find_person_data_by_name(st.session_state.current_user)["picture_path"]
+    image = Image.open("./" + st.session_state.picture_path)
+    st.image(image, caption=st.session_state.current_user)
