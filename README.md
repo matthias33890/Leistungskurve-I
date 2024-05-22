@@ -8,6 +8,10 @@ folgende Pakete werden benötigt:
 
 siehe ```requirements.txt```
 
+Diese können mit folgendem Befehl gesammelt installiert werden:
+
+```pip install -r requirements.txt```
+
 # Beschreibung und Erklärung der App
 Die App kann nach ausführen von main.py über den Befehl ```streamlit run main.py``` aufgerufen werden. Nun kann der interaktive Graph mit den angegebenen Werten eingesehen werden. Der Benutzer kann nun eine maximale Herzfrequenz eingeben, diese darf maximal 220 betragen. Nun können im Bereich Data die verschiedenen Daten eingesehen werden.
 
