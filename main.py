@@ -6,8 +6,11 @@ from read_pandas import max_power
 from read_pandas import calculate_resting_heart_rate
 from read_pandas import create_zones_table
 from read_pandas import calculate_time_in_zones
+from read_pandas import extract_power_time_at
+import plotly.express as px
+import plotly.graph_objects as go
 
-tab1, tab2 = st.tabs(["Graph", "Data"])
+tab1, tab2, tab3, tab4 = st.tabs(["Graph-Power/Heartrate", "Data Heartrate/Power", "Data Leistungskurve-II", "Graph Leistungskurve-II"])
 df = read_my_csv()
 
 with tab1:
@@ -26,3 +29,13 @@ with tab2:
     st.write("Max Heart Rate: ", df['HeartRate'].max())
     st.write("Time and Average Power in Zones")
     st.dataframe(zones_table)
+
+with tab3:
+    st.subheader("DataFrame")
+    result_df = extract_power_time_at(df)
+    st.dataframe(result_df)
+
+with tab4:
+    st.subheader("Leistungskurve-II")
+    fig = px.line(result_df, y='Threshold', x='Durations', title='Durations per Threshold', labels={'Threshold': 'Threshold in Watt', 'Durations': 'Durations in Seconds'})
+    st.plotly_chart(fig)
