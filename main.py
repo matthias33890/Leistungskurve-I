@@ -1,46 +1,28 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import os #erstellt Ordner, Directorys etc.
-from sort import bubble_sort
-from load_data import load_data
-def main():
-    # Lade die CSV-Datei
-    #data = pd.read_csv('Sort_activity.csv') # weitere Möglichkeit die Daten zu laden
+import streamlit as st
+from read_pandas import read_my_csv
+from read_pandas import make_plot
+from read_pandas import mean_power
+from read_pandas import max_power
+from read_pandas import calculate_resting_heart_rate
+from read_pandas import create_zones_table
+from read_pandas import calculate_time_in_zones
 
-    data = load_data('Sort_activity.csv')
-    print(data)
-    # Überprüfe, ob die Spalte 'PowerOriginal' vorhanden ist
-    if 'PowerOriginal' not in data.keys():
-        print("Die Spalte 'PowerOriginal' fehlt in den Daten.")
-        return
+tab1, tab2 = st.tabs(["Graph", "Data"])
+df = read_my_csv()
 
-    # Entferne NaN-Werte und sortiere die Werte
-    #sorted_power_1 = data['PowerOriginal'].dropna().sort_values() # weitere möglichkeit die Werte zu sortieren
-    power = data['PowerOriginal']
-    sorted_power = bubble_sort(power)
-    print(sorted_power[::-1]) #mit [::-1] wird die Liste umgedreht
-    
-    plt.figure()
-    # Umwandlung der Indexwerte von Sekunden in Minuten
-    minutes = range(len(sorted_power))  # Erzeugt eine Sequenz von Indizes
-    minutes = [m / 60 for m in minutes]  # Konvertiert Indizes in Minuten
+with tab1:
+    st.header("Graph")
+    max_heart_rate = st.number_input('Maximale Herzfrequenz', min_value=100, max_value=220, value=190) 
+    time_in_zones, average_power_in_zones = calculate_time_in_zones(df, max_heart_rate)
+    zones_table = create_zones_table(time_in_zones, average_power_in_zones)
+    fig = make_plot(df, max_heart_rate,time_in_zones, average_power_in_zones)
+    st.plotly_chart(fig)
 
-    plt.plot(minutes, sorted_power[::-1], label='PowerOriginal')
-    plt.title('Power-Curve')
-    plt.xlabel('Minuten')
-    plt.ylabel('Leistung (Watt)')
-    plt.legend()
-
-    # Überprüfe, ob der Ordner 'figures' existiert, und erstelle ihn ggf.
-    if not os.path.exists('figures'):
-        os.makedirs('figures')
-
-    # Speichere die Grafik
-    plt.savefig('figures/power_curve.png')
-
-    print("Die Grafik wurde in 'figures/power_curve.png' gespeichert.")
-
-if __name__ == '__main__':
-    main()
-
-
+with tab2:
+    st.header("Data")
+    st.write("Mean Power: ", df['PowerOriginal'].mean())
+    st.write("Max Power: ", df['PowerOriginal'].max())
+    st.write("Resting Heart Rate: ", calculate_resting_heart_rate(df))
+    st.write("Max Heart Rate: ", df['HeartRate'].max())
+    st.write("Time and Average Power in Zones")
+    st.dataframe(zones_table)
