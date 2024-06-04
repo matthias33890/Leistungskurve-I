@@ -38,8 +38,45 @@ def calculate_time_in_zones(df, max_heart_rate):
 
     return time_in_zones, average_power_in_zones
 
-# Funktion zum Erstellen des Plots
-def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
+def calculate_resting_heart_rate(activity_data):
+    # Wir nehmen an, dass die niedrigsten 5% der Herzfrequenzwerte die Ruheherzfrequenz darstellen
+    resting_heart_rate = activity_data['HeartRate'].nsmallest(int(len(activity_data) * 0.05)).mean()
+    return resting_heart_rate
+
+def create_zones_table(time_in_zones, average_power_in_zones):
+    zones_df = pd.DataFrame({
+        "Zone": ["Zone 1", "Zone 2", "Zone 3", "Zone 4", "Zone 5"],
+        "Time (s)": time_in_zones,
+        "Average Power (W)": average_power_in_zones
+    })
+    return zones_df
+
+#Code für Leistungskurve-II
+#Es soll eine Funktion erstellt werden, mit der das PowerSignal analysiert wird.
+
+def extract_power_time_at(series, step = 10):
+    all_thresholds = []
+    all_durations = []
+
+    for threshold in range(series.index[0], series.index[-1], step):
+        durations = []
+        leftime, righttime  = None, None
+        for row in series.itertuples():
+            if row.PowerOriginal > threshold and leftime is None:
+                leftime = row.Index
+                print("lefttime: ", leftime)
+            if row.PowerOriginal < threshold and leftime is not None:
+                righttime = row.Index
+                print("Righttime: ", righttime)
+                durations.append(righttime - leftime)
+                leftime, righttime = None, None
+        if durations:  # Falls durations nicht leer ist
+            all_thresholds.append(threshold)
+            all_durations.append(max(durations))
+    result_df = pd.DataFrame({'Threshold': all_thresholds, 'Durations': all_durations})
+    return result_df
+
+def plot_time_series(df, max_heart_rate):
     # Definieren der Herzfrequenzzonen
     zones = [
         {"min": 0, "max": 0.6 * max_heart_rate, "color": "lightgreen", "label": "Zone 1"},
@@ -48,7 +85,6 @@ def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
         {"min": 0.8 * max_heart_rate, "max": 0.9 * max_heart_rate, "color": "red", "label": "Zone 4"},
         {"min": 0.9 * max_heart_rate, "max": max_heart_rate, "color": "darkred", "label": "Zone 5"}
     ]
-    
     fig = go.Figure()
 
     # linke y-Achse für PowerOriginal
@@ -102,45 +138,7 @@ def make_plot(df, max_heart_rate, time_in_zones, average_power_in_zones):
         )
 
     return fig
-
-def calculate_resting_heart_rate(activity_data):
-    # Wir nehmen an, dass die niedrigsten 5% der Herzfrequenzwerte die Ruheherzfrequenz darstellen
-    resting_heart_rate = activity_data['HeartRate'].nsmallest(int(len(activity_data) * 0.05)).mean()
-    return resting_heart_rate
-
-def create_zones_table(time_in_zones, average_power_in_zones):
-    zones_df = pd.DataFrame({
-        "Zone": ["Zone 1", "Zone 2", "Zone 3", "Zone 4", "Zone 5"],
-        "Time (s)": time_in_zones,
-        "Average Power (W)": average_power_in_zones
-    })
-    return zones_df
-
-#Code für Leistungskurve-II
-#Es soll eine Funktion erstellt werden, mit der das PowerSignal analysiert wird.
-
-def extract_power_time_at(series, step = 10):
-    all_thresholds = []
-    all_durations = []
-
-    for threshold in range(series.index[0], series.index[-1], step):
-        durations = []
-        leftime, righttime  = None, None
-        for row in series.itertuples():
-            if row.PowerOriginal > threshold and leftime is None:
-                leftime = row.Index
-                print("lefttime: ", leftime)
-            if row.PowerOriginal < threshold and leftime is not None:
-                righttime = row.Index
-                print("Righttime: ", righttime)
-                durations.append(righttime - leftime)
-                leftime, righttime = None, None
-        if durations:  # Falls durations nicht leer ist
-            all_thresholds.append(threshold)
-            all_durations.append(max(durations))
-    result_df = pd.DataFrame({'Threshold': all_thresholds, 'Durations': all_durations})
-    return result_df
-
+    
 if __name__ == "__main__":
     df = read_my_csv()
     print(extract_power_time_at(df))
