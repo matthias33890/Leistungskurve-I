@@ -8,11 +8,11 @@ from person import Person
 from ekgdata import EKGdata
 import plotly
 
-#Lastenheft für Abschlussprojekt:
+#Pflichtenheft für Abschlussprojekt:
 # Basistodo:
 # Code schöner strukturieren
 # Readmed verbessern
-# Basisfunktionen fertig implementieren
+# Basisfunktionen fertig implementieren ()
 #
 # Zusätzliche Funktionen:
 # Schneller laden indem ich di serie in st.sessionstat speicher bzw. auf einer Datenbank speichern
@@ -23,7 +23,7 @@ import plotly
 
 def callback_function():
     print(f"The user has changed to {st.session_state.current_user}")
-    print(f"The EKG date has changed to {st.session_state.ekg_date}")
+    print(f"The EKG date has changed to {st.session_state.ekg_dates}")
 
 if 'current_user' not in st.session_state:
     st.session_state.current_user = 'None'
