@@ -6,6 +6,9 @@ Es soll ein interaktiver Plot erstellt werden, der die Herzfrequenz und die Leis
 # Leistungskurve II
 Nun soll eine Leistungskurve erstellt werden, die basierend auf den Leistungen in Watt eine Power-Curve erstellt. Es soll außerdem angezeigt werden um welche Zeit bzw. Dauer es sich handelt. Außerdem soll immer die maximale Zeitspanne zwischen zwei Werten verwendet werden.
 
+# Objektorientierung
+Nun sollen die Klassen ```person```und ```Ekgdata``` um folgende Methoden erweitert werden. Personen sollen in einem Dashboard angezeigt werden, zu diesen sollen die EKG Daten visualisiert werden.Aus diesen soll ein Plot mit angezeigten Peaks erstellt werden. Dafür sollen auch ```static methods```verwendet werden, diese gehören zur Klasse und nicht zur Instanz, das heißt sie können aufgerufen werden ohne das ein neues Objekt erstellt wird. 
+
 
 ## Requirements
 folgende Pakete werden benötigt:
@@ -17,13 +20,11 @@ Diese können mit folgendem Befehl gesammelt installiert werden:
 ```pip install -r requirements.txt```
 
 ## Beschreibung und Erklärung der App
-Die App kann nach ausführen von main.py über den Befehl ```streamlit run main.py``` aufgerufen werden. Nun kann der interaktive Graph im Bereich ```Graph-Power/Heartrate``` mit den angegebenen Werten eingesehen werden. Der Benutzer kann nun eine maximale Herzfrequenz eingeben, diese darf maximal 220 betragen. Es können im Bereich ```Data Heartrate/Power``` die verschiedenen Daten eingesehen werden. Im Bereich ```Data Leistungskurve-II```können die Daten zu den gegeben Werten eingesehen, die für die Power Curve benötigt werden, die im Bereich ```Graph Leistungskurve-II```eingesehen werden kann.
-
+Die App kann nach ausführen von main.py über den Befehl ```streamlit run main.py``` aufgerufen werden. Nun kann die gewünschte Person und das gewünschte Experiment ausgewählt werden. Daraufhin können die interaktiven Plots für das EKG Signal und für den Puls eingesehen werden. Außerdem werden dem Benutzer noch der maximale Puls und der Durchschittswert des EKG Signals angezeigt.
 ## Userinterface
-![Interface Graph-Power/Heartrate](data/pictures/ScreenshotGraph.png)
-![Interface Data Heartrate/Power](data/pictures/ScreenshotData.png)
-![Interface Data Leistungskurve II](data/pictures/ScreenshotDataLeistungskurveII.png)
-![Interface Graph Leistungskurve-II](data/pictures/ScreenshotGraphLeistungskurveII.png)
+![Userinterface1](data/pictures/Screenshot_1.png)
+![Userinterface2](data/pictures/Screenshot_2.png)
+![Userinterface3](data/pictures/Screenshot_3.png)
 
 
 
