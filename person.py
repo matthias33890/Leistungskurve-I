@@ -1,23 +1,25 @@
 import json
 from datetime import date
 import datetime
+import ekgdata
 
 class Person:
     def __init__(self, person_dict) -> None:
-        self.date_of_birth = person_dict["date_of_birth"]
+        self.id = person_dict["id"]
         self.firstname = person_dict["firstname"]
         self.lastname = person_dict["lastname"]
+        self.date_of_birth = person_dict["date_of_birth"]
         self.picture_path = person_dict["picture_path"]
-        self.id = person_dict["id"]
-        self.age = Person.calc_age(self.date_of_birth)
-        self.person_data = Person.load_by_id(self.id) # oder mit der Methode find_person_data_by_name
+        self.age = Person.calc_age(self, self.date_of_birth)
+        self.max_heartrate = ekgdata.EKGdata.estimate_max_hr(self.age, "male")
+        self.person_dict = Person.load_by_id(self, self.id) # oder mit der Methode find_person_data_by_name
 
     def calc_age(self, date_of_birth):
         """Eine Funktion die das Alter einer Person berechnet und zurück gibt"""
         today = date.today()
         return today.year - date_of_birth
     
-    def load_by_id(id):
+    def load_by_id(self, id):
         """ Eine Funktion der ID als ein String übergeben wird
         und die die Person als Dictionary zurück gibt"""
         person_data = Person.load_person_data()
@@ -36,7 +38,6 @@ class Person:
     def find_person_data_by_name(suchstring):
         """ Eine Funktion der Nachname, Vorname als ein String übergeben wird
         und die die Person als Dictionary zurück gibt"""
-
         person_data = Person.load_person_data()
         #print(suchstring)
         if suchstring == "None":
