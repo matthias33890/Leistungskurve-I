@@ -7,29 +7,36 @@ import pandas as pd
 import json
 import plotly.graph_objects as go
 from plotly import subplots
-import time
 from concurrent.futures import ThreadPoolExecutor
+import os
 
-# Datenbankverbindung herstellen
-database_url = "postgresql://leistungs_user:password@localhost:5432/leistungskurve"
+# Establish database connection
+database_url = os.environ.get('DATABASE_URL')
 conn = psycopg2.connect(database_url)
 cur = conn.cursor()
 
-# Callback-Funktion
 def callback_function():
+    """
+    Callback function to update session state and rerun the app when selection changes.
+    """
     st.session_state.current_user = st.session_state.sbVersuchsperson
     st.session_state.current_date = st.session_state.sbExperimentauswahl
     st.experimental_rerun()
 
-# Initialisiere die Session State
+# Initialize session state
 if 'current_user' not in st.session_state:
     st.session_state.current_user = 'None'
 
 if 'picture_path' not in st.session_state:
     st.session_state.picture_path = 'data/pictures/none.jpg'
 
-# Lade Personendaten aus der Datenbank
 def load_person_data():
+    """
+    Load person data from the database and return as a list of dictionaries.
+    
+    Returns:
+    - List of dictionaries containing person data.
+    """
     cur.execute("SELECT * FROM persons")
     rows = cur.fetchall()
     persons = []
@@ -48,8 +55,16 @@ def load_person_data():
         persons.append(person)
     return persons
 
-# Lade EKG-Daten aus der Datenbank
 def load_ekg_data_by_person_id(person_id):
+    """
+    Load EKG data for a specific person from the database.
+    
+    Parameters:
+    - person_id: ID of the person.
+    
+    Returns:
+    - List of dictionaries containing EKG data.
+    """
     cur.execute("SELECT * FROM ekgdata WHERE person_id = %s", (person_id,))
     rows = cur.fetchall()
     ekg_tests = []
@@ -66,16 +81,22 @@ def load_ekg_data_by_person_id(person_id):
         ekg_tests.append(ekg)
     return ekg_tests
 
+# Load person data and generate list of names
 person_dict = load_person_data()
 person_names = [f"{person['firstname']} {person['lastname']}" for person in person_dict]
 
 st.write("# EKG APP")
 
+# Layout for person selection and display
 col1, col2 = st.columns(2)
 with col1:
     st.write("## Versuchsperson auswählen")
-    st.session_state.current_user = st.selectbox('Versuchsperson',
-        options=person_names, key="sbVersuchsperson", on_change=callback_function)
+    st.session_state.current_user = st.selectbox(
+        'Versuchsperson',
+        options=person_names,
+        key="sbVersuchsperson",
+        on_change=callback_function
+    )
     
     current_person_dict = next(person for person in person_dict if f"{person['firstname']} {person['lastname']}" == st.session_state.current_user)
     current_person = Person(current_person_dict)
@@ -87,8 +108,12 @@ with col1:
 
     ekg_dates = [ekg["date"] for ekg in ekg_data]
 
-    st.session_state.current_date = st.selectbox('Experimentauswahl',
-            options=ekg_dates, key="sbExperimentauswahl", on_change=callback_function)
+    st.session_state.current_date = st.selectbox(
+        'Experimentauswahl',
+        options=ekg_dates,
+        key="sbExperimentauswahl",
+        on_change=callback_function
+    )
 
     ekg_data = next(ekg for ekg in ekg_data if ekg["date"] == st.session_state.current_date)
 
@@ -106,7 +131,8 @@ with col2:
     st.image(image, caption=st.session_state.current_user)
 
 st.write("### EKG Diagramm")
-# Schieberegler für den Zeitbereich
+
+# Slider for selecting time range
 min_time = current_ekg_df["Time in ms"].min() / 60000
 max_time = current_ekg_df["Time in ms"].max() / 60000
 start_time, end_time = st.slider(
@@ -125,39 +151,45 @@ if 'result' not in st.session_state:
 result = st.session_state.result
 
 def plot_time_series(min_time, max_time):
-    # Filtere die Daten basierend auf min_time und max_time
+    """
+    Plot the EKG time series data and heart rate within the selected time range.
+    
+    Parameters:
+    - min_time: Minimum time in minutes to display.
+    - max_time: Maximum time in minutes to display.
+    
+    Returns:
+    - Plotly figure object.
+    """
+    # Filter data based on min_time and max_time
     filtered_df = result[(result["Time in ms"] / 60000 >= min_time) & (result["Time in ms"] / 60000 <= max_time)]
     
     fig = subplots.make_subplots(rows=2, cols=1, shared_xaxes=True, vertical_spacing=0.2)
     
     # Plot EKG Signal
-    fig.add_trace(go.Scattergl(x=filtered_df["Time in ms"] / 60000, y=filtered_df["EKG in mV"], mode='lines', name='EKG in mV'),
-                  row=1, col=1)
+    fig.add_trace(go.Scattergl(x=filtered_df["Time in ms"] / 60000, y=filtered_df["EKG in mV"], mode='lines', name='EKG in mV'), row=1, col=1)
     
     # Plot Peaks
-    fig.add_trace(go.Scattergl(x=filtered_df["Time in ms"] / 60000, y=filtered_df["Peaks"], mode='markers', name='Peaks', marker=dict(color='red')),
-                  row=1, col=1)
+    fig.add_trace(go.Scattergl(x=filtered_df["Time in ms"] / 60000, y=filtered_df["Peaks"], mode='markers', name='Peaks', marker=dict(color='red')), row=1, col=1)
     
-    # Plot Heart Rate (nur an den Positionen der Peaks)
-    fig.add_trace(go.Scattergl(x=filtered_df["Time in ms"] / 60000, y=filtered_df["HeartRate"], mode='markers', name='Heart Rate', marker=dict(color='blue')),
-                  row=2, col=1)
+    # Plot Heart Rate (only at peak positions)
+    fig.add_trace(go.Scattergl(x=filtered_df["Time in ms"] / 60000, y=filtered_df["HeartRate"], mode='markers', name='Heart Rate', marker=dict(color='blue')), row=2, col=1)
     
-    # Verbinde die Herzfrequenzwerte nur an den Peaks
+    # Connect heart rate values only at peaks
     peak_indices = filtered_df.dropna(subset=["HeartRate"]).index
-    fig.add_trace(go.Scattergl(x=filtered_df.loc[peak_indices, "Time in ms"] / 60000, y=filtered_df.loc[peak_indices, "HeartRate"], mode='lines', name='Heart Rate (Line)', line=dict(color='green')),
-                  row=2, col=1)
+    fig.add_trace(go.Scattergl(x=filtered_df.loc[peak_indices, "Time in ms"] / 60000, y=filtered_df.loc[peak_indices, "HeartRate"], mode='lines', name='Heart Rate (Line)', line=dict(color='green')), row=2, col=1)
     
-    # Update Layout
+    # Update layout
     fig.update_layout(height=600, width=800, title_text="EKG Signal and Heart Rate")
     fig.update_xaxes(title_text="Time in minutes", row=2, col=1)
     fig.update_yaxes(title_text="EKG in mV", row=1, col=1)
     fig.update_yaxes(title_text="Heart Rate (BPM)", row=2, col=1)
     return fig
 
-# Plotten der gesamten Daten
+# Plot the selected time range
 fig = plot_time_series(start_time, end_time)
 st.plotly_chart(fig, use_container_width=True)
 
-# Schließe die Verbindung
+# Close database connection
 cur.close()
 conn.close()

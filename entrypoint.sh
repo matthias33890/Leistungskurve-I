@@ -1,14 +1,14 @@
 #!/bin/bash
-# Warte auf die Datenbank, bevor setup.py ausgeführt wird und streamlit startet
+# Wait for the database before running setup.py and starting streamlit
 
-# Prüfe die Datenbankverbindung
-until pg_isready -h db -p 5432 -U user; do
-  echo "Warte auf PostgreSQL..."
+# Check database connection
+until pg_isready -h db -p 5432 -U leistungs_user; do
+  echo "Waiting for PostgreSQL..."
   sleep 2
 done
 
-# Führe setup.py aus
+# Run setup.py
 python setup.py
 
-# Starte Streamlit
+# Start Streamlit
 streamlit run main.py

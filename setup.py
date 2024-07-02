@@ -5,13 +5,19 @@ from person import Person
 from ekgdata import EKGdata
 import json
 import pandas as pd
+import os
 
-# Hole die Datenbank-URL aus den Umgebungsvariablen
-database_url = "postgresql://leistungs_user:password@localhost:5432/leistungskurve"
+# Database URL from environment variables
+database_url = os.environ.get('DATABASE_URL')
+
+# Establish a connection to the database
 conn = psycopg2.connect(database_url)
 cur = conn.cursor()
 
 def create_tables():
+    """
+    Create the 'persons' and 'ekgdata' tables in the database if they do not already exist.
+    """
     commands = (
         """
         CREATE TABLE IF NOT EXISTS persons (
@@ -38,29 +44,59 @@ def create_tables():
         """
     )
     try:
-        # Tabellen erstellen
+        # Execute table creation commands
         for command in commands:
             cur.execute(command)
-        # Änderungen speichern
+        # Commit changes
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
 
 def person_exists(person_id):
+    """
+    Check if a person with the given ID exists in the 'persons' table.
+    
+    Parameters:
+    - person_id: ID of the person to check.
+    
+    Returns:
+    - True if the person exists, False otherwise.
+    """
     cur.execute("SELECT 1 FROM persons WHERE id = %s", (person_id,))
     return cur.fetchone() is not None
 
 def ekgdata_exists(ekg_id):
+    """
+    Check if an EKG record with the given ID exists in the 'ekgdata' table.
+    
+    Parameters:
+    - ekg_id: ID of the EKG record to check.
+    
+    Returns:
+    - True if the EKG record exists, False otherwise.
+    """
     cur.execute("SELECT 1 FROM ekgdata WHERE id = %s", (ekg_id,))
     return cur.fetchone() is not None
 
 def convert_df_to_json(df):
-    # Ersetze NaN-Werte durch None für die JSON-Konvertierung
+    """
+    Convert a DataFrame to JSON format, replacing NaN values with None.
+    
+    Parameters:
+    - df: DataFrame to convert.
+    
+    Returns:
+    - JSON representation of the DataFrame.
+    """
     df_replaced = df.where(pd.notnull(df), None)
     return df_replaced.to_json(orient='records')
 
 def load_data():
+    """
+    Load person and EKG data from the JSON file and insert it into the database.
+    """
     person_dict = Person.load_person_data()
+    
     for person in person_dict:
         current_person = Person(person)
         person_dict_json = json.dumps(current_person.person_dict)
@@ -82,8 +118,10 @@ def load_data():
             print(f"Person {current_person.firstname} {current_person.lastname} hinzugefügt.")
         
         ekg_data = person["ekg_tests"]
+        
         for ekg in ekg_data:
             current_ekg = EKGdata(ekg["id"], ekg["date"], ekg["result_link"])
+            
             if not ekgdata_exists(current_ekg.id):
                 cur.execute("""
                     INSERT INTO ekgdata (id, person_id, date, result_link, df, df_with_peaks, df_with_hr)
@@ -101,7 +139,12 @@ def load_data():
                 print(f"EKG-Daten für Person {current_person.firstname} {current_person.lastname} hinzugefügt.")
 
 if __name__ == '__main__':
+    # Create tables if they don't exist
     create_tables()
+    
+    # Load data into the database
     load_data()
+    
+    # Close the database cursor and connection
     cur.close()
     conn.close()
