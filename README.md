@@ -26,10 +26,31 @@ Die App kann nach ausführen von main.py über den Befehl ```streamlit run main.
 ![Userinterface2](data/pictures/Screenshot_2.png)
 ![Userinterface3](data/pictures/Screenshot_3.png)
 
+# Zusätzliche Funktionen und Basisfunktionen:
 
+```mermaid
+mindmap
+  root((Leistungskurve))
+    Basisfunktionen
+      Schöne Strukturierung des Codes
+      EKG Daten sinnvoll resamplen
+      Kommentare und Docstrings
+      Statische Methoden minimieren
+    Zusätzliche Funktionen
+      Datenbank speicherung
+      Parallel processing
+      Dockererstellung
+      Auf Hostinger hosten mit ssl zertifikate etc.
+      als WebApp zur Verfügung stellen
+      Doppelklick zum Bearbeiten
 
+#Probleme:
 
+Das größte Problem hat sich bei uns herausgestellt, es herzubekommen, dass die Daten schnell genug angezeigt werden.
+Dies hat zwar schlussendlich auf unseren laptops dank multiprocessing halbwegs schnell geklappt, aber nachdem wir den Code auf einen VPS geladen haben. Welcher wesentlich schlechter von der Leistung her ist, hat sich dieses Problem nochmals sehr deutlich gemacht. Wir konnten leider bis zum schluss nicht richtig dieses Problem lösen, ohne dabei einfach weniger Daten zu behandeln.
+Dies hätte aber keinen Sinn gemacht.
+Alle anderen Probleme die aufgetreten sind, konnten wir aber lösen.
 
+#Fazit:
 
-
-
+Schlussendlich hat sich dieses Projekt als sehr interessant herausgestellt und es wurden alle wichtigen Basics in Python damit umgesetzt. Die zusätzlichen Funktionen haben uns zudem noch einen größeren Einblick in die Thematik des IT-Aspects gegeben.
