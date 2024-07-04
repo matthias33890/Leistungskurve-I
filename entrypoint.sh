@@ -11,4 +11,4 @@ done
 python setup.py
 
 # Start Streamlit
-streamlit run main.py
+streamlit run main.py --server.port 8502

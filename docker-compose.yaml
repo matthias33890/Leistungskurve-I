@@ -13,17 +13,25 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
       - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
+    networks:
+      - mixpost_default
 
   app:
     build: .
     container_name: ekg_app
     ports:
-      - "8502:8501"
+      - "8502:8502"
     environment:
-      - DATABASE_URL=postgresql://leistungs_user:password@db:5432/leistungskurve
+      - DATABASE_URL=postgresql://leistungs_user:password@postgres_db:5432/leistungskurve
     depends_on:
       - db
+    networks:
+      - mixpost_default
 
 volumes:
   db:
     driver: local
+
+networks:
+  mixpost_default:
+    external: true
