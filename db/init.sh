@@ -19,6 +19,9 @@ done
 # Update pg_hba.conf
 echo "host    all             all             0.0.0.0/0               trust" >> "$PGDATA/pg_hba.conf"
 
+# Execute the setup SQL script
+psql -U postgres -f /docker-entrypoint-initdb.d/setup.sql
+
 # Stop PostgreSQL
 pg_ctl -D "$PGDATA" -m fast -w stop
 
