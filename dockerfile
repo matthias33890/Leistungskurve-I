@@ -20,8 +20,8 @@ COPY . .
 RUN chmod +x /app/entrypoint.sh
 #RUN chmod +x /app/init.sh
 
-# Expose port 8501 for streamlit
-EXPOSE 8501
+# Expose port 8502 for streamlit
+EXPOSE 8502
 
 # Run entrypoint.sh
 ENTRYPOINT ["/app/entrypoint.sh"]
