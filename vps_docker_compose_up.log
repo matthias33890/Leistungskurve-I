@@ -1,0 +1,117 @@
+postgres_db | Initializing database...
+postgres_db | The files belonging to this database system will be owned by user "postgres".
+postgres_db | This user must also own the server process.
+postgres_db | 
+postgres_db | The database cluster will be initialized with locale "en_US.utf8".
+postgres_db | The default database encoding has accordingly been set to "UTF8".
+postgres_db | The default text search configuration will be set to "english".
+postgres_db | 
+postgres_db | Data page checksums are disabled.
+postgres_db | 
+postgres_db | fixing permissions on existing directory /var/lib/postgresql/data ... ok
+postgres_db | creating subdirectories ... ok
+postgres_db | selecting dynamic shared memory implementation ... posix
+postgres_db | selecting default max_connections ... 100
+postgres_db | selecting default shared_buffers ... 128MB
+postgres_db | selecting default time zone ... UTC
+postgres_db | creating configuration files ... ok
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+postgres_db | running bootstrap script ... ok
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+postgres_db | performing post-bootstrap initialization ... sh: locale: not found
+postgres_db | 2024-07-09 13:11:25.670 UTC [12] WARNING:  no usable system locales were found
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+postgres_db | ok
+ekg_app | db:5432 - no response
+ekg_app | Waiting for PostgreSQL...
+postgres_db | syncing data to disk ... ok
+postgres_db | 
+postgres_db | 
+postgres_db | Success. You can now start the database server using:
+postgres_db | 
+postgres_db |     pg_ctl -D /var/lib/postgresql/data -l logfile start
+postgres_db | 
+postgres_db | initdb: warning: enabling "trust" authentication for local connections
+postgres_db | You can change this by editing pg_hba.conf or using the option -A, or
+postgres_db | --auth-local and --auth-host, the next time you run initdb.
+postgres_db | waiting for server to start....2024-07-09 13:11:55.972 UTC [16] LOG:  starting PostgreSQL 14.1 on x86_64-pc-linux-musl, compiled by gcc (Alpine 10.3.1_git20211027) 10.3.1 20211027, 64-bit
+postgres_db | 2024-07-09 13:11:56.064 UTC [16] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres_db | 2024-07-09 13:11:56.065 UTC [16] LOG:  listening on IPv6 address "::", port 5432
+postgres_db | 2024-07-09 13:11:56.069 UTC [16] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres_db | 2024-07-09 13:11:56.166 UTC [17] LOG:  database system was shut down at 2024-07-09 13:11:51 UTC
+postgres_db | 2024-07-09 13:11:56.170 UTC [16] LOG:  database system is ready to accept connections
+postgres_db |  done
+postgres_db | server started
+postgres_db | CREATE ROLE
+postgres_db | 2024-07-09 13:11:58.672 UTC [28] FATAL:  database "leistungs_user" does not exist
+ekg_app | db:5432 - accepting connections
+postgres_db | CREATE DATABASE
+postgres_db | GRANT
+postgres_db | 2024-07-09 13:12:01.965 UTC [16] LOG:  received fast shutdown request
+postgres_db | waiting for server to shut down....2024-07-09 13:12:01.968 UTC [16] LOG:  aborting any active transactions
+postgres_db | 2024-07-09 13:12:02.064 UTC [16] LOG:  background worker "logical replication launcher" (PID 23) exited with exit code 1
+postgres_db | 2024-07-09 13:12:02.065 UTC [18] LOG:  shutting down
+postgres_db | 2024-07-09 13:12:02.665 UTC [16] LOG:  database system is shut down
+postgres_db |  done
+postgres_db | server stopped
+postgres_db | 2024-07-09 13:12:03.665 UTC [1] LOG:  starting PostgreSQL 14.1 on x86_64-pc-linux-musl, compiled by gcc (Alpine 10.3.1_git20211027) 10.3.1 20211027, 64-bit
+postgres_db | 2024-07-09 13:12:03.666 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+postgres_db | 2024-07-09 13:12:03.667 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+postgres_db | 2024-07-09 13:12:03.768 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+postgres_db | 2024-07-09 13:12:03.966 UTC [30] LOG:  database system was shut down at 2024-07-09 13:12:02 UTC
+postgres_db | 2024-07-09 13:12:03.972 UTC [1] LOG:  database system is ready to accept connections
+ekg_app | Person Julian Huber hinzugefügt.
+ekg_app | EKG-Daten für Person Julian Huber hinzugefügt.
+ekg_app | EKG-Daten für Person Julian Huber hinzugefügt.
+ekg_app | Person Yannic Heyer hinzugefügt.
+ekg_app | EKG-Daten für Person Yannic Heyer hinzugefügt.
+ekg_app | Person Yunus Schmirander hinzugefügt.
+ekg_app | EKG-Daten für Person Yunus Schmirander hinzugefügt.
+ekg_app | 
+ekg_app | Collecting usage statistics. To deactivate, set browser.gatherUsageStats to False.
+ekg_app | 
+ekg_app | 
+ekg_app |   You can now view your Streamlit app in your browser.
+ekg_app | 
+ekg_app |   Network URL: http://172.18.0.8:8502
+ekg_app |   External URL: http://217.196.48.196:8502
+ekg_app | 
+ekg_app | 
+ekg_app |   A new version of Streamlit is available.
+ekg_app | 
+ekg_app |   See what's new at https://discuss.streamlit.io/c/announcements
+ekg_app | 
+ekg_app |   Enter the following command to upgrade:
+ekg_app |   $ pip install streamlit --upgrade
+ekg_app | 
+ekg_app | /app/main.py:77: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+ekg_app |   "df": pd.read_json(row[4]),
+ekg_app | /app/main.py:78: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+ekg_app |   "df_with_peaks": pd.read_json(row[5]),
+ekg_app | /app/main.py:79: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+ekg_app |   "df_with_hr": pd.read_json(row[6])
+ekg_app | /app/main.py:77: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+ekg_app |   "df": pd.read_json(row[4]),
+ekg_app | /app/main.py:78: FutureWarning: Passing literal json to 'read_json' is deprecated and will be removed in a future version. To read from a literal string, wrap it in a 'StringIO' object.
+ekg_app |   "df_with_peaks": pd.read_json(row[5]),

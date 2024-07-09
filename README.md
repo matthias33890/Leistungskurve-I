@@ -1,32 +1,21 @@
-# Interaktiver Plot
+
+# Interaktiver Plot für Herzfrequenz und Leistung
+
 Projektmitglieder: Christian Kleber, Matthias Hansen
 
-Es soll ein interaktiver Plot erstellt werden, der die Herzfrequenz und die Leistung in abhängigkeit der Dauer, anhand von fünf Zonen, die abhängig von der maximalen Herzfrequenz sind, darstellt. Außerdem soll die maximale Herzfrequenz durch den Benutzer eingegeben und verändert werden können.
+## Projektbeschreibung
 
-# Leistungskurve II
-Nun soll eine Leistungskurve erstellt werden, die basierend auf den Leistungen in Watt eine Power-Curve erstellt. Es soll außerdem angezeigt werden um welche Zeit bzw. Dauer es sich handelt. Außerdem soll immer die maximale Zeitspanne zwischen zwei Werten verwendet werden.
+Dieses Projekt zielt darauf ab, einen interaktiven Plot zu erstellen, der die Herzfrequenz und die Leistung in Abhängigkeit von der Dauer darstellt. 
 
-# Objektorientierung
-Nun sollen die Klassen ```person```und ```Ekgdata``` um folgende Methoden erweitert werden. Personen sollen in einem Dashboard angezeigt werden, zu diesen sollen die EKG Daten visualisiert werden.Aus diesen soll ein Plot mit angezeigten Peaks erstellt werden. Dafür sollen auch ```static methods```verwendet werden, diese gehören zur Klasse und nicht zur Instanz, das heißt sie können aufgerufen werden ohne das ein neues Objekt erstellt wird. 
+### Leistungskurve II
 
+Zusätzlich soll eine Leistungskurve basierend auf den Leistungen in Watt erstellt werden. Diese Power-Curve zeigt die Leistung im Verhältnis zur Zeit bzw. Dauer an. Dabei wird stets die maximale Zeitspanne zwischen zwei Werten verwendet.
 
-## Requirements
-folgende Pakete werden benötigt:
+### Objektorientierung
 
-siehe ```requirements.txt```
+Die Klassen `Person` und `Ekgdata` werden um Methoden erweitert, die die Daten in einem Dashboard visualisieren. Ein Plot mit angezeigten Peaks der EKG-Daten soll erstellt werden. Statische Methoden werden verwendet, die zur Klasse und nicht zur Instanz gehören, sodass sie ohne ein neues Objekt aufgerufen werden können.
 
-Diese können mit folgendem Befehl gesammelt installiert werden:
-
-```pip install -r requirements.txt```
-
-## Beschreibung und Erklärung der App
-Die App kann nach ausführen von main.py über den Befehl ```streamlit run main.py``` aufgerufen werden. Nun kann die gewünschte Person und das gewünschte Experiment ausgewählt werden. Daraufhin können die interaktiven Plots für das EKG Signal und für den Puls eingesehen werden. Außerdem werden dem Benutzer noch der maximale Puls und der Durchschittswert des EKG Signals angezeigt.
-## Userinterface
-![Userinterface1](data/pictures/Screenshot_1.png)
-![Userinterface2](data/pictures/Screenshot_2.png)
-![Userinterface3](data/pictures/Screenshot_3.png)
-
-# Zusätzliche Funktionen und Basisfunktionen:
+## Abschlussprojekt (Zusätzliche Funktionen und Basisfunktionen)
 
 ```mermaid
 mindmap
@@ -37,20 +26,71 @@ mindmap
       Kommentare und Docstrings
       Statische Methoden minimieren
     Zusätzliche Funktionen
-      Datenbank speicherung
-      Parallel processing
-      Dockererstellung
-      Auf Hostinger hosten mit ssl zertifikate etc.
-      als WebApp zur Verfügung stellen
-      Doppelklick zum Bearbeiten
+      Datenbank Speicherung
+      Parallel Processing
+      Docker Erstellung
+      Auf Hostinger hosten mit SSL-Zertifikaten
+      Als WebApp zur Verfügung stellen
+```
 
-#Probleme:
+### Requirements
 
-Das größte Problem hat sich bei uns herausgestellt, es herzubekommen, dass die Daten schnell genug angezeigt werden.
-Dies hat zwar schlussendlich auf unseren laptops dank multiprocessing halbwegs schnell geklappt, aber nachdem wir den Code auf einen VPS geladen haben. Welcher wesentlich schlechter von der Leistung her ist, hat sich dieses Problem nochmals sehr deutlich gemacht. Wir konnten leider bis zum schluss nicht richtig dieses Problem lösen, ohne dabei einfach weniger Daten zu behandeln.
-Dies hätte aber keinen Sinn gemacht.
-Alle anderen Probleme die aufgetreten sind, konnten wir aber lösen.
+Folgende Pakete werden benötigt:
 
-#Fazit:
+Siehe `requirements.txt`
 
-Schlussendlich hat sich dieses Projekt als sehr interessant herausgestellt und es wurden alle wichtigen Basics in Python damit umgesetzt. Die zusätzlichen Funktionen haben uns zudem noch einen größeren Einblick in die Thematik des IT-Aspects gegeben.
+Diese können mit folgendem Befehl installiert werden:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Beschreibung und Erklärung der App
+
+Durch `docker-compose up --build -d` können die Docker-Images erstellt werden. Anschließend kann man sich über [http://localhost:8502/](http://localhost:8502/) verbinden.
+
+Nun kann die gewünschte Person und das gewünschte Experiment ausgewählt werden. Daraufhin können die interaktiven Plots für das EKG-Signal und für den Puls eingesehen werden. Außerdem werden dem Benutzer der maximale Puls und der Durchschnittswert des EKG-Signals angezeigt.
+
+## Probleme
+
+### Performance
+
+Das größte Problem war die schnelle Anzeige der Daten. Dies hat auf unseren Laptops dank Multiprocessing halbwegs schnell geklappt. Auf einem VPS, der wesentlich schlechtere Leistung bietet, wurde dieses Problem jedoch deutlich sichtbar. Wir konnten dieses Problem nicht vollständig lösen, ohne weniger Daten zu verarbeiten, was jedoch keinen Sinn gemacht hätte.
+
+### Docker auf VPS
+
+Ein weiteres Problem war, den Docker-Container auf dem VPS richtig zum Laufen zu bringen. Es mussten folgende Änderungen vorgenommen werden:
+
+- Port ändern auf 8502
+- Anpassung der `pg_hba.conf`, um mit den Netzwerkrichtlinien übereinzustimmen
+- Erstellung einer eigenen Dockerfile für den SQL-Server, sodass die passenden Skripte am Anfang ohne Probleme ausgeführt werden
+
+Alle anderen aufgetretenen Probleme konnten wir jedoch lösen.
+
+## User Interface
+
+![Userinterface1](data/ergebnisse/UI_1.png)
+![Userinterface2](data/ergebnisse/UI_2.png)
+
+Das User Interface ist nicht besonders spannend, da wir uns mehr darauf konzentriert haben, grundlegende Änderungen im Hintergrund zu implementieren.
+
+## SSL Verschlüsselung
+
+![SSL](data/ergebnisse/SSL.png)
+
+Es ist uns gelungen, das Repository/Docker-Image auf dem VPS zum Laufen zu bringen. Dadurch kann man, wenn das Docker-Image läuft, über die Links:
+
+- [https://uni.ravexserver.duckdns.org/](https://uni.ravexserver.duckdns.org/)
+- [http://ravexserver.duckdns.org:8502/](http://ravexserver.duckdns.org:8502/)
+
+auf die Streamlit-App zugreifen. Leider läuft die App nicht konsistent auf dem VPS, da es zu einer CPU-Auslastung von 100% kommt, wenn sie aktiv ist.
+
+## Web App
+
+![Webapp](data/ergebnisse/android_studio.png)
+
+Mittels Android Studio wurde eine Web-App entwickelt. Diese funktionierte zwar, jedoch führte die lange Ladezeit zu einer schlechten Darstellung. Eine APK für diese App wurde ebenfalls erstellt und kann aus dem GitHub-Repository heruntergeladen werden.
+
+## Fazit
+
+Dieses Projekt war sehr interessant und ermöglichte die Umsetzung aller wichtigen Grundlagen in Python. Die zusätzlichen Funktionen gaben uns einen größeren Einblick in die IT-Thematik.
