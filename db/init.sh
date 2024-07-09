@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Initialize the database cluster if it does not exist
+if [ ! -s "$PGDATA/PG_VERSION" ]; then
+  echo "Initializing database..."
+  initdb -D "$PGDATA"
+fi
+
 # Start the PostgreSQL service in the background
 pg_ctl -D "$PGDATA" -o "-c listen_addresses='*'" -w start
 
