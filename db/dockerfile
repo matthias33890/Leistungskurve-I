@@ -12,5 +12,7 @@ COPY init.sh /docker-entrypoint-initdb.d/
 # Make the script executable
 RUN chmod +x /docker-entrypoint-initdb.d/init.sh
 
-# Override the default entrypoint to include our script
+USER postgres
+
+# Run init.sh
 ENTRYPOINT ["/docker-entrypoint-initdb.d/init.sh"]

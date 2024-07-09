@@ -18,7 +18,6 @@ COPY . .
 
 # Make entrypoint.sh executable
 RUN chmod +x /app/entrypoint.sh
-#RUN chmod +x /app/init.sh
 
 # Expose port 8502 for streamlit
 EXPOSE 8502
