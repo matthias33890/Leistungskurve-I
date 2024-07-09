@@ -15,7 +15,6 @@ services:
       - '5432:5432'
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
     networks:
       - mixpost_default
 

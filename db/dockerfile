@@ -5,8 +5,12 @@ ENV POSTGRES_USER=postgres
 ENV POSTGRES_PASSWORD=password
 ENV POSTGRES_DB=leistungskurve
 
-# Copy the initialization script
+# Copy the initialization script and entry script
 COPY setup.sql /docker-entrypoint-initdb.d/
+COPY init.sh /docker-entrypoint-initdb.d/
 
-# Append the configuration to pg_hba.conf
-RUN echo "host    all             all             0.0.0.0/0               trust" >> /var/lib/postgresql/data/pg_hba.conf
+# Make the script executable
+RUN chmod +x /docker-entrypoint-initdb.d/init.sh
+
+# Override the default entrypoint to include our script
+ENTRYPOINT ["/docker-entrypoint-initdb.d/init.sh"]
