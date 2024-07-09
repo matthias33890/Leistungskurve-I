@@ -1,0 +1,12 @@
+FROM postgres:14.1-alpine
+
+# Set environment variables
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=password
+ENV POSTGRES_DB=leistungskurve
+
+# Copy the initialization script
+COPY setup.sql /docker-entrypoint-initdb.d/
+
+# Append the configuration to pg_hba.conf
+RUN echo "host    all             all             0.0.0.0/0               trust" >> /var/lib/postgresql/data/pg_hba.conf

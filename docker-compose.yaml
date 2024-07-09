@@ -2,18 +2,20 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:14.1-alpine
+    build:
+      context: ./db
+      dockerfile: Dockerfile
     container_name: postgres_db
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=leistungskurve
     ports:
       - '5432:5432'
     volumes:
-      - db:/var/lib/postgresql/data
-      - ./setup.sql:/docker-entrypoint-initdb.d/setup.sql
-      #- ./init.sh:/docker-entrypoint-initdb.d/init.sh # Füge dies hinzu
+      - db_data:/var/lib/postgresql/data
+      - ./db/setup.sql:/docker-entrypoint-initdb.d/setup.sql
     networks:
       - mixpost_default
 
@@ -30,7 +32,7 @@ services:
       - mixpost_default
 
 volumes:
-  db:
+  db_data:
     driver: local
 
 networks:
