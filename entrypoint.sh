@@ -7,7 +7,7 @@ until pg_isready -h db -p 5432 -U leistungs_user; do
   sleep 2
 done
 #!/bin/bash
-echo 'host    all             all             0.0.0.0/0               trust' >> /var/lib/postgresql/data/pg_hba.conf
+#echo 'host    all             all             0.0.0.0/0               trust' >> /var/lib/postgresql/data/pg_hba.conf
 
 
 # Run setup.py
