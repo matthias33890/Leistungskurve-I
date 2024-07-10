@@ -13,7 +13,7 @@ Zusätzlich soll eine Leistungskurve basierend auf den Leistungen in Watt erstel
 
 ### Objektorientierung
 
-Die Klassen `Person` und `Ekgdata` werden um Methoden erweitert, die die Daten in einem Dashboard visualisieren. Ein Plot mit angezeigten Peaks der EKG-Daten soll erstellt werden. Statische Methoden werden verwendet, die zur Klasse und nicht zur Instanz gehören, sodass sie ohne ein neues Objekt aufgerufen werden können.
+Die Klassen `Person` und `Ekgdata` werden um Methoden erweitert, die die Daten in einem Dashboard visualisieren. Ein Plot mit angezeigten Peaks der EKG-Daten soll erstellt werden. Statische Methoden werden verwendet, die zur Klasse und nicht zur Instanz gehören, sodass sie ohne ein neues Objekt zu erstellen, aufgerufen werden können.
 
 ## Abschlussprojekt (Zusätzliche Funktionen und Basisfunktionen)
 
@@ -55,7 +55,7 @@ Nun kann die gewünschte Person und das gewünschte Experiment ausgewählt werde
 
 ### Performance
 
-Das größte Problem war die schnelle Anzeige der Daten. Dies hat auf unseren Laptops dank Multiprocessing halbwegs schnell geklappt. Auf einem VPS, der wesentlich schlechtere Leistung bietet, wurde dieses Problem jedoch deutlich sichtbar. Wir konnten dieses Problem nicht vollständig lösen, ohne weniger Daten zu verarbeiten, was jedoch keinen Sinn gemacht hätte.
+Das größte Problem war die schnelle Anzeige der Daten. Dies hat auf unseren Laptops dank Multiprocessing halbwegs schnell funktioniert. Auf einem VPS (Virtual Private Server), der wesentlich schlechtere Leistung bietet, wurde dieses Problem jedoch deutlich sichtbar. Wir konnten dieses Problem nicht vollständig beheben, ohne weniger Daten zu verarbeiten, was jedoch keinen Sinn gemacht hätte.
 
 ### Docker auf VPS
 
@@ -63,7 +63,7 @@ Ein weiteres Problem war, den Docker-Container auf dem VPS richtig zum Laufen zu
 
 - Port ändern auf 8502
 - Anpassung der `pg_hba.conf`, um mit den Netzwerkrichtlinien übereinzustimmen
-- Erstellung einer eigenen Dockerfile für den SQL-Server, sodass die passenden Skripte am Anfang ohne Probleme ausgeführt werden
+- Erstellung eines eigenen Dockerfiles für den SQL-Server, sodass die passenden Skripte am Anfang ohne Probleme ausgeführt werden
 
 Alle anderen aufgetretenen Probleme konnten wir jedoch lösen.
 
@@ -89,7 +89,7 @@ auf die Streamlit-App zugreifen. Leider läuft die App nicht konsistent auf dem 
 
 ![Webapp](data/ergebnisse/android_studio.png)
 
-Mittels Android Studio wurde eine Web-App entwickelt. Diese funktionierte zwar, jedoch führte die lange Ladezeit zu einer schlechten Darstellung. Eine APK für diese App wurde ebenfalls erstellt und kann aus dem GitHub-Repository heruntergeladen werden.
+Mittels Android Studio wurde eine Web-App entwickelt. Diese funktioniert zwar, jedoch führt die lange Ladezeit zu einer schlechten Darstellung. Eine APK für diese App wurde ebenfalls erstellt und kann aus dem GitHub-Repository heruntergeladen werden.
 
 ## Fazit
 
